@@ -3,11 +3,13 @@
 using BinaryBuilder, Pkg
 
 name = "liblinear"
-version = v"2.30.0"
+version = v"2.45.0"
+
+julia_compat = "1.6"
 
 # Collection of sources required to complete build
 sources = [
-    ArchiveSource("https://github.com/cjlin1/liblinear/archive/v230.tar.gz", "9b57710078206d4dbbe75e9015d4cf7fabe4464013fe0e89b8a2fe40038f8f51"),
+    ArchiveSource("https://github.com/cjlin1/liblinear/archive/refs/tags/v245.tar.gz", "ce29f42c2c0d10e4627ac50a953fe3c130d2802868e6a2dc9a396356b96e8abc"),
     DirectorySource("./bundled")
 ]
 
@@ -17,7 +19,7 @@ cd $WORKSPACE/srcdir
 for f in ${WORKSPACE}/srcdir/patches/*.patch; do
     atomic_patch -p1 ${f}
 done
-cd liblinear-230/
+cd liblinear-245/
 mkdir -p ${prefix}/bin
 mkdir -p ${prefix}/lib
 if [[ "${target}" == *-freebsd* ]] || [[ "${target}" == *-apple-* ]]; then
@@ -47,4 +49,4 @@ dependencies = Dependency[
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
-build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies)
+build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies; julia_compat=julia_compat)
